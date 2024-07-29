@@ -1,4 +1,5 @@
 let lastCode = '';
+let isFormatCodeTurn = true;
 
 function copyToClipboard(code) {
     const tempTextArea = document.createElement('textarea');
@@ -30,11 +31,13 @@ function handleCodeInput(e) {
     lastCode = code;  // Store the original code
     updateStatus('formatted-code', `Code formatted and copied to clipboard: ${code.split('\n').length} lines.`);
     copyToClipboard(formattedCode);
-    if (document.getElementById('auto-clear-format').checked) {
-        setTimeout(() => e.target.value = '', 0);
-    } else {
-        e.target.value = code;
-    }
+    e.target.value = code;
+    
+    // Move focus to Process Changes input and clear it
+    const changesInput = document.getElementById('changes-input');
+    changesInput.value = '';
+    changesInput.focus();
+    isFormatCodeTurn = false;
 }
 
 function sortChanges(changes) {
@@ -99,12 +102,27 @@ function handleChangesInput(e) {
     const formattedProcessedCode = formatCode(processedCode);
     updateStatus('processed-code', `Changes processed and code copied to clipboard: ${sortedChanges.length} changes made.`);
     copyToClipboard(processedCode);
-    if (document.getElementById('auto-clear-process').checked) {
-        setTimeout(() => e.target.value = '', 0);
+    e.target.value = changesInput;
+    
+    // Move focus back to Format Code input and clear it
+    const codeInput = document.getElementById('code-input');
+    codeInput.value = '';
+    codeInput.focus();
+    isFormatCodeTurn = true;
+}
+
+function handlePaste(e) {
+    if (isFormatCodeTurn) {
+        handleCodeInput(e);
     } else {
-        e.target.value = changesInput;
+        handleChangesInput(e);
     }
 }
 
-document.getElementById('code-input').addEventListener('paste', handleCodeInput);
-document.getElementById('changes-input').addEventListener('paste', handleChangesInput);
+document.getElementById('code-input').addEventListener('paste', handlePaste);
+document.getElementById('changes-input').addEventListener('paste', handlePaste);
+
+// Set initial focus to Format Code input
+window.onload = function() {
+    document.getElementById('code-input').focus();
+};
