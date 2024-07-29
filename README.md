@@ -2,7 +2,9 @@
 
 Inspired from [hannesrudolph/llm-code-helper](https://github.com/hannesrudolph/llm-code-helper). Actually, code converted from it by the help of Claude 3.5 Sonnet, with only one prompt. From Python to pure html, for easy using.
 
-Just open the index.html file from your browser, you don't need Python or any installation.
+Just clone this repo, andopen the `index.html` file from your browser, you don't need Python or any installation.
+
+Or you can open my page online: [LLM Coder](https://christorng.github.io/LLMCoder/). It runs purly on your browser, no data is sent to any server.
 
 Attached original README.md:
 
