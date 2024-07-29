@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Coder</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <h1>LLM Coder</h1>
+
+    <h2>Format Code</h2>
+    <form id="format-form">
+        <textarea id="code-input" name="code" placeholder="Paste your code here"></textarea>
+        <div class="form-controls">
+            <div class="left">
+                <button type="submit">Format Code</button>
+            </div>
+            <div class="right">
+                <label for="auto-clear-format">Auto Clear: </label> 
+                <label class="switch"><input type="checkbox" id="auto-clear-format" name="auto-clear-format"><span class="slider round"></span></label>
+            </div>
+        </div>
+    </form>
+    <div id="formatted-code"></div>
+
+    <h2>Process Changes</h2>
+    <form id="process-form">
+        <textarea id="changes-input" name="changes" placeholder="Paste your LLM provided JSON changes here"></textarea>
+        <div class="form-controls">
+            <div class="left">
+                <button type="submit">Process Changes</button>
+            </div>
+            <div class="right">
+                <label for="auto-clear-process">Auto Clear:</label> 
+                <label class="switch"><input type="checkbox" id="auto-clear-process" name="auto-clear-process"><span class="slider round"></span></label>
+            </div>
+        </div>
+    </form>
+    <div id="processed-code"></div>
+
+    <script src="index.js"></script>
+</body>
+</html>
