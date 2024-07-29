@@ -1,11 +1,13 @@
 let lastCode = '';
 
 function copyToClipboard(code) {
-    navigator.clipboard.writeText(code).then(() => {
-        console.log('Code copied to clipboard');
-    }).catch(err => {
-        console.error('Failed to copy code: ', err);
-    });
+    const tempTextArea = document.createElement('textarea');
+    tempTextArea.value = code;
+    document.body.appendChild(tempTextArea);
+    tempTextArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempTextArea);
+    console.log('Code copied to clipboard');
 }
 
 function updateStatus(targetId, message) {
@@ -22,13 +24,16 @@ function formatCode(code) {
 }
 
 function handleCodeInput(e) {
-    const code = e.target.value;
+    e.preventDefault();
+    const code = e.clipboardData.getData('text');
     const formattedCode = formatCode(code);
     lastCode = code;  // Store the original code
     updateStatus('formatted-code', `Code formatted and copied to clipboard: ${code.split('\n').length} lines.`);
     copyToClipboard(formattedCode);
     if (document.getElementById('auto-clear-format').checked) {
         setTimeout(() => e.target.value = '', 0);
+    } else {
+        e.target.value = code;
     }
 }
 
@@ -41,7 +46,8 @@ function sortChanges(changes) {
 }
 
 function handleChangesInput(e) {
-    const changesInput = e.target.value;
+    e.preventDefault();
+    const changesInput = e.clipboardData.getData('text');
     let changes;
     try {
         changes = JSON.parse(changesInput);
@@ -95,6 +101,8 @@ function handleChangesInput(e) {
     copyToClipboard(processedCode);
     if (document.getElementById('auto-clear-process').checked) {
         setTimeout(() => e.target.value = '', 0);
+    } else {
+        e.target.value = changesInput;
     }
 }
 
