@@ -7,20 +7,19 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <h1>LLM Coder</h1>
-
-    <h2>Format Code</h2>
-    <div class="input-container">
-        <textarea id="code-input" name="code" placeholder="Paste and auto format code"></textarea>
+    <div class="container">
+        <h1>LLM Coder</h1>
+        <div class="code-section">
+            <h2>Format Code</h2>
+            <textarea id="code-input" name="code" placeholder="Paste and auto format code"></textarea>
+            <div id="formatted-code" class="status-area"></div>
+        </div>
+        <div class="code-section">
+            <h2>Process Changes</h2>
+            <textarea id="changes-input" name="changes" placeholder="Paste and auto process changes"></textarea>
+            <div id="processed-code" class="status-area"></div>
+        </div>
     </div>
-    <div id="formatted-code"></div>
-
-    <h2>Process Changes</h2>
-    <div class="input-container">
-        <textarea id="changes-input" name="changes" placeholder="Paste and auto process changes"></textarea>
-    </div>
-    <div id="processed-code"></div>
-
     <script src="index.js"></script>
 </body>
 </html>
