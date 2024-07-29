@@ -21,17 +21,16 @@ function formatCode(code) {
     ).join('\n');
 }
 
-document.getElementById('format-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const code = document.getElementById('code-input').value;
+function handleCodeInput(e) {
+    const code = e.target.value;
     const formattedCode = formatCode(code);
     lastCode = code;  // Store the original code
     updateStatus('formatted-code', `Code formatted and copied to clipboard: ${code.split('\n').length} lines.`);
     copyToClipboard(formattedCode);
     if (document.getElementById('auto-clear-format').checked) {
-        document.getElementById('code-input').value = '';
+        setTimeout(() => e.target.value = '', 0);
     }
-});
+}
 
 function sortChanges(changes) {
     return changes.sort((a, b) => {
@@ -41,9 +40,8 @@ function sortChanges(changes) {
     });
 }
 
-document.getElementById('process-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const changesInput = document.getElementById('changes-input').value;
+function handleChangesInput(e) {
+    const changesInput = e.target.value;
     let changes;
     try {
         changes = JSON.parse(changesInput);
@@ -96,6 +94,9 @@ document.getElementById('process-form').addEventListener('submit', function(e) {
     updateStatus('processed-code', `Changes processed and code copied to clipboard: ${sortedChanges.length} changes made.`);
     copyToClipboard(processedCode);
     if (document.getElementById('auto-clear-process').checked) {
-        document.getElementById('changes-input').value = '';
+        setTimeout(() => e.target.value = '', 0);
     }
-});
+}
+
+document.getElementById('code-input').addEventListener('paste', handleCodeInput);
+document.getElementById('changes-input').addEventListener('paste', handleChangesInput);

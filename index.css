@@ -37,21 +37,6 @@ textarea {
     resize: vertical;
 }
 
-button {
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: var(--button-bg);
-    color: var(--text-color);
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: var(--button-hover);
-}
-
 .status {
     background-color: var(--status-bg);
     padding: 15px;
@@ -75,13 +60,9 @@ button:hover {
 
 .form-controls {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin-bottom: 20px;
-}
-
-.form-controls .left {
-    flex-grow: 1;
 }
 
 .form-controls .right {
@@ -133,4 +114,8 @@ input:checked + .slider {
 
 input:checked + .slider:before {
     transform: translateX(14px);
+}
+
+.input-container {
+    margin-bottom: 20px;
 }
