@@ -17,19 +17,37 @@ function updateStatus(targetId, message) {
 }
 
 function formatCode(code) {
-    const lines = code.split('\n');
-    const maxLineNumWidth = String(lines.length).length;
-    return lines.map((line, i) => 
-        `${(i + 1).toString().padStart(maxLineNumWidth)}. ${line}`
-    ).join('\n');
+    // 統一將所有的行結束符轉換為 \n
+    code = code.replace(/\r\n/g, '\n');
+
+    const files = code.split('## File:');
+    let formattedCode = '';
+
+    for (let i = 1; i < files.length; i++) {
+        const [fileName, ...contentLines] = files[i].trim().split('\n');
+        const codeContent = contentLines.join('\n').trim();
+        const languageMatch = codeContent.match(/```(\w+)\n/);
+        const language = languageMatch ? languageMatch[1] : '';
+        const actualCode = codeContent.replace(/```\w*\n|```$/g, '');
+
+        const lines = actualCode.split('\n');
+        const maxLineNumWidth = String(lines.length).length;
+        const numberedLines = lines.map((line, index) =>
+            `${(index + 1).toString().padStart(maxLineNumWidth)}. ${line}`
+        ).join('\n');
+
+        formattedCode += `## File: ${fileName.trim()}\n\`\`\`${language}\n${numberedLines}\n\`\`\`\n\n`;
+    }
+
+    return formattedCode.trim();
 }
 
 function handleCodeInput(e) {
     e.preventDefault();
     const code = e.clipboardData.getData('text');
     const formattedCode = formatCode(code);
-    lastCode = code;  // Store the original code
-    updateStatus('formatted-code', `Code formatted and copied to clipboard: ${code.split('\n').length} lines.`);
+    lastCode = formattedCode;  // Store the formatted code
+    updateStatus('formatted-code', `Code formatted and copied to clipboard.`);
     copyToClipboard(formattedCode);
     e.target.value = code;
     
@@ -50,7 +68,7 @@ function sortChanges(changes) {
 
 function handleChangesInput(e) {
     e.preventDefault();
-    const changesInput = e.clipboardData.getData('text');
+    const changesInput = e.clipboardData.getData('text').replace(/\r\n/g, '\n');
     let changes;
     try {
         changes = JSON.parse(changesInput);
@@ -89,7 +107,7 @@ function handleChangesInput(e) {
                 lines.splice(start, end - start + 1);
                 break;
             case 'insertafter':
-                lines.splice(start + 1, 0, change.text);
+                lines.splice(start + 1, 0, ...change.text.split('\n'));
                 break;
             case 'replace':
                 lines.splice(start, end - start + 1, ...change.text.split('\n'));
@@ -101,7 +119,7 @@ function handleChangesInput(e) {
     lastCode = processedCode;  // Update the stored code
     const formattedProcessedCode = formatCode(processedCode);
     updateStatus('processed-code', `Changes processed and code copied to clipboard: ${sortedChanges.length} changes made.`);
-    copyToClipboard(processedCode);
+    copyToClipboard(formattedProcessedCode);
     e.target.value = changesInput;
     
     // Move focus back to Format Code input and clear it
