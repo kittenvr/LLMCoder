@@ -33,6 +33,10 @@ function formatCode(code) {
             const actualCode = codeContent.replace(/```\w*\n|```$/g, '');
 
             const lines = actualCode.split('\n');
+            // 移除最後一個元素，如果它是空字符串
+            if (lines[lines.length - 1] === '') {
+                lines.pop();
+            }
             const maxLineNumWidth = String(lines.length).length;
             const numberedLines = lines.map((line, index) =>
                 `${(index + 1).toString().padStart(maxLineNumWidth)}. ${line}`
@@ -45,6 +49,10 @@ function formatCode(code) {
     } else {
         // 單一文本內容格式
         const lines = code.split('\n');
+        // 移除最後一個元素，如果它是空字符串
+        if (lines[lines.length - 1] === '') {
+            lines.pop();
+        }
         const maxLineNumWidth = String(lines.length).length;
         const numberedLines = lines.map((line, index) =>
             `${(index + 1).toString().padStart(maxLineNumWidth)}. ${line}`
