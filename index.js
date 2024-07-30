@@ -1,5 +1,5 @@
 let lastCode = '';
-let isFormatCodeTurn = true;
+let formattedCode = '';
 
 function copyToClipboard(code) {
     const tempTextArea = document.createElement('textarea');
@@ -45,17 +45,11 @@ function formatCode(code) {
 function handleCodeInput(e) {
     e.preventDefault();
     const code = e.clipboardData.getData('text');
-    const formattedCode = formatCode(code);
-    lastCode = formattedCode;  // Store the formatted code
+    formattedCode = formatCode(code);
+    lastCode = code;  // Store the original code
     updateStatus('formatted-code', `Code formatted and copied to clipboard.`);
     copyToClipboard(formattedCode);
     e.target.value = code;
-    
-    // Move focus to Process Changes input and clear it
-    const changesInput = document.getElementById('changes-input');
-    changesInput.value = '';
-    changesInput.focus();
-    isFormatCodeTurn = false;
 }
 
 function sortChanges(changes) {
@@ -82,7 +76,7 @@ function handleChangesInput(e) {
         return;
     }
 
-    let lines = lastCode.split('\n');
+    let lines = formattedCode.split('\n');
     const sortedChanges = sortChanges(changes);
 
     for (const change of sortedChanges.reverse()) {
@@ -117,22 +111,17 @@ function handleChangesInput(e) {
 
     const processedCode = lines.join('\n');
     lastCode = processedCode;  // Update the stored code
-    const formattedProcessedCode = formatCode(processedCode);
+    formattedCode = processedCode;  // Update the formatted code
     updateStatus('processed-code', `Changes processed and code copied to clipboard: ${sortedChanges.length} changes made.`);
-    copyToClipboard(formattedProcessedCode);
+    copyToClipboard(processedCode);
     e.target.value = changesInput;
-    
-    // Move focus back to Format Code input and clear it
-    const codeInput = document.getElementById('code-input');
-    codeInput.value = '';
-    codeInput.focus();
-    isFormatCodeTurn = true;
 }
 
 function handlePaste(e) {
-    if (isFormatCodeTurn) {
+    const targetId = e.target.id;
+    if (targetId === 'code-input') {
         handleCodeInput(e);
-    } else {
+    } else if (targetId === 'changes-input') {
         handleChangesInput(e);
     }
 }
