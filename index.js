@@ -20,26 +20,38 @@ function formatCode(code) {
     // 統一將所有的行結束符轉換為 \n
     code = code.replace(/\r\n/g, '\n');
 
-    const files = code.split('## File:');
-    let formattedCode = '';
+    // 檢查是否為多文件格式
+    if (code.trim().startsWith('## File:')) {
+        const files = code.split('## File:');
+        let formattedCode = '';
 
-    for (let i = 1; i < files.length; i++) {
-        const [fileName, ...contentLines] = files[i].trim().split('\n');
-        const codeContent = contentLines.join('\n').trim();
-        const languageMatch = codeContent.match(/```(\w+)\n/);
-        const language = languageMatch ? languageMatch[1] : '';
-        const actualCode = codeContent.replace(/```\w*\n|```$/g, '');
+        for (let i = 1; i < files.length; i++) {
+            const [fileName, ...contentLines] = files[i].trim().split('\n');
+            const codeContent = contentLines.join('\n').trim();
+            const languageMatch = codeContent.match(/```(\w+)\n/);
+            const language = languageMatch ? languageMatch[1] : '';
+            const actualCode = codeContent.replace(/```\w*\n|```$/g, '');
 
-        const lines = actualCode.split('\n');
+            const lines = actualCode.split('\n');
+            const maxLineNumWidth = String(lines.length).length;
+            const numberedLines = lines.map((line, index) =>
+                `${(index + 1).toString().padStart(maxLineNumWidth)}. ${line}`
+            ).join('\n');
+
+            formattedCode += `## File: ${fileName.trim()}\n\`\`\`${language}\n${numberedLines}\n\`\`\`\n\n`;
+        }
+
+        return formattedCode.trim();
+    } else {
+        // 單一文本內容格式
+        const lines = code.split('\n');
         const maxLineNumWidth = String(lines.length).length;
         const numberedLines = lines.map((line, index) =>
             `${(index + 1).toString().padStart(maxLineNumWidth)}. ${line}`
         ).join('\n');
 
-        formattedCode += `## File: ${fileName.trim()}\n\`\`\`${language}\n${numberedLines}\n\`\`\`\n\n`;
+        return numberedLines;
     }
-
-    return formattedCode.trim();
 }
 
 function handleCodeInput(e) {
