@@ -96,7 +96,7 @@ function handleChangesInput(e) {
         return;
     }
 
-    let lines = formattedCode.split('\n');
+    let lines = lastCode.split('\n');
     const sortedChanges = sortChanges(changes);
 
     for (const change of sortedChanges.reverse()) {
@@ -120,7 +120,7 @@ function handleChangesInput(e) {
             case 'remove':
                 lines.splice(start, end - start + 1);
                 break;
-            case 'insertafter':
+            case 'insertAfter':
                 lines.splice(start + 1, 0, ...change.text.split('\n'));
                 break;
             case 'replace':
