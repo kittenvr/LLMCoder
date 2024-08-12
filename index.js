@@ -110,9 +110,10 @@ function handleChangesInput(e) {
             const context = contextLines.map((line, i) => `${i + Math.max(0, start-2) + 1}: ${line}`).join('<br>');
             const errorMessage = `<b>Error:</b> Original text mismatch at line ${start + 1}.<br>` +
                                  `<b>Expected:</b> '${change.first_original_line.trim()}'<br>` +
-                                 `<b>Found:</b> '${firstOriginalLine}'<br>` +
+                                 `<b>Found   :</b> '${firstOriginalLine}'<br>` +
                                  `<b>Context:</b><br>${context}`;
             updateStatus('processed-code', errorMessage);
+            console.log(errorMessage.replace(/<br>/g, '\n').replace(/<b>/g, '').replace(/<\/b>/g, ''));
             return;
         }
 
