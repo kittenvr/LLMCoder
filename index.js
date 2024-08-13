@@ -64,6 +64,9 @@ function handleCodeInput(e) {
     lastCode = code;  // Store the original code
     document.getElementById('line-numbered-code').textContent = formattedCode;
     copyToClipboard(formattedCode);
+    document.getElementById('changes-input').value = '';
+    document.getElementById('result-area').textContent = '';
+    document.getElementById('changes-input').focus();
     e.target.value = code;
 }
 
@@ -76,7 +79,9 @@ function sortChanges(changes) {
 }
 
 function handleChangesInput(e) {
+    e.preventDefault();
     const changesInput = e.clipboardData.getData('text').replace(/\r\n/g, '\n');
+    e.target.value = changesInput;
     let changes;
     try {
         changes = JSON.parse(changesInput);
@@ -126,6 +131,9 @@ function handleChangesInput(e) {
     const processedCode = lines.join('\n');
     document.getElementById('result-area').textContent = processedCode;
     copyToClipboard(processedCode);
+    document.getElementById('code-input').value = '';
+    document.getElementById('line-numbered-code').textContent = '';
+    document.getElementById('code-input').focus();
 }
 
 function handlePaste(e) {
