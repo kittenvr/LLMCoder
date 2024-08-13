@@ -13,7 +13,7 @@ function copyToClipboard(code) {
 
 function updateStatus(targetId, message) {
     const targetElement = document.getElementById(targetId);
-    targetElement.innerHTML = `<div class="status">${message}</div>`;
+    targetElement.textContent = message;
 }
 
 function formatCode(code) {
@@ -83,7 +83,6 @@ function sortChanges(changes) {
 }
 
 function handleChangesInput(e) {
-    e.preventDefault();
     const changesInput = e.clipboardData.getData('text').replace(/\r\n/g, '\n');
     let changes;
     try {
@@ -109,13 +108,13 @@ function handleChangesInput(e) {
         const firstOriginalLine = lines[start].trim();
         if (change.first_original_line.trim() !== firstOriginalLine) {
             const contextLines = lines.slice(Math.max(0, start-2), Math.min(lines.length, end+3));
-            const context = contextLines.map((line, i) => `${i + Math.max(0, start-2) + 1}: ${line}`).join('<br>');
-            const errorMessage = `<b>Error:</b> Original text mismatch at line ${start + 1}.<br>` +
-                                 `<b>Expected:</b> '${change.first_original_line.trim()}'<br>` +
-                                 `<b>Found   :</b> '${firstOriginalLine}'<br>` +
-                                 `<b>Context:</b><br>${context}`;
+            const context = contextLines.map((line, i) => `${i + Math.max(0, start-2) + 1}: ${line}`).join('\n');
+            const errorMessage = `Error: Original text mismatch at line ${start + 1}.\n` +
+                                 `Expected: '${change.first_original_line.trim()}'\n` +
+                                 `Found   : '${firstOriginalLine}'\n` +
+                                 `Context:\n${context}`;
             updateStatus('processed-code', errorMessage);
-            console.log(errorMessage.replace(/<br>/g, '\n').replace(/<b>/g, '').replace(/<\/b>/g, ''));
+            document.getElementById('result-area').textContent = errorMessage;
             return;
         }
 
@@ -134,10 +133,9 @@ function handleChangesInput(e) {
 
     const processedCode = lines.join('\n');
     lastCode = processedCode;  // Update the stored code
-    formattedCode = processedCode;  // Update the formatted code
-    updateStatus('processed-code', `Changes processed and code copied to clipboard: ${sortedChanges.length} changes made.`);
-    copyToClipboard(processedCode);
-    e.target.value = changesInput;
+    formattedCode = formatCode(processedCode);  // Update the formatted code
+    updateStatus('processed-code', `Changes processed: ${sortedChanges.length} changes made.`);
+    document.getElementById('result-area').textContent = formattedCode;
 }
 
 function handlePaste(e) {
