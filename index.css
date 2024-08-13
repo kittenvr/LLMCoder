@@ -65,9 +65,23 @@ h2 {
 .code-section {
     flex: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     margin-bottom: 1rem;
 }
+
+.input-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.output-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+}
+
 
 textarea {
     flex: 1;
@@ -92,6 +106,7 @@ textarea {
 }
 
 .line-numbered-area {
+    flex: 1;
     background-color: var(--input-bg);
     color: var(--text-color);
     border: 1px solid var(--primary-color);
@@ -100,7 +115,6 @@ textarea {
     font-family: 'Fira Code', monospace;
     font-size: 0.9rem;
     overflow-y: auto;
-    max-height: 300px;
     white-space: pre-wrap;
 }
 

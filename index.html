@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,26 +8,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
     <div class="container">
         <header>
             <h1>LLM Coder</h1>
-            <a href="https://github.com/ChrisTorng/LLMCoder" target="_blank" rel="noopener noreferrer" class="github-link">
+            <a href="https://github.com/ChrisTorng/LLMCoder" target="_blank" rel="noopener noreferrer"
+                class="github-link">
                 <i class="fab fa-github"></i>
             </a>
         </header>
         <div class="code-section">
-            <h2>Format Code</h2>
-            <textarea id="code-input" name="code" placeholder="Paste and auto format code"></textarea>
-            <div id="formatted-code" class="status-area"></div>
-            <div id="line-numbered-code" class="line-numbered-area"></div>
+            <div class="input-area">
+                <h2>Source Code</h2>
+                <textarea id="code-input" name="code" placeholder="Paste and auto format code"></textarea>
+                <div id="formatted-code" class="status-area"></div>
+            </div>
+            <div class="output-area">
+                <h2>Formatted Code</h2>
+                <div id="line-numbered-code" class="line-numbered-area"></div>
+            </div>
         </div>
         <div class="code-section">
-            <h2>Process Changes</h2>
-            <textarea id="changes-input" name="changes" placeholder="Paste and auto process changes"></textarea>
-            <div id="processed-code" class="status-area"></div>
+            <div class="input-area">
+                <h2>Process Changes</h2>
+                <textarea id="changes-input" name="changes" placeholder="Paste and auto process changes"></textarea>
+                <div id="processed-code" class="status-area"></div>
+            </div>
         </div>
     </div>
     <script src="index.js"></script>
 </body>
+
 </html>

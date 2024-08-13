@@ -1,5 +1,6 @@
 instructions/**
 .claudeignore
 .linenumberignore
+.syncignore
 LICENSE
 README.md
