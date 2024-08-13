@@ -66,13 +66,15 @@ h2 {
     flex: 1;
     display: flex;
     flex-direction: row;
-    margin-bottom: 1rem;
+    gap: 1rem;
+    overflow: hidden;
 }
 
-.input-area {
+.input-area, .output-area {
     flex: 1;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .output-area {
@@ -83,7 +85,7 @@ h2 {
 }
 
 
-textarea {
+textarea, .line-numbered-area {
     flex: 1;
     background-color: var(--input-bg);
     color: var(--text-color);
@@ -93,6 +95,7 @@ textarea {
     font-family: 'Fira Code', monospace;
     font-size: 0.9rem;
     resize: none;
+    overflow: auto;
 }
 
 .status-area {
@@ -106,16 +109,8 @@ textarea {
 }
 
 .line-numbered-area {
-    flex: 1;
-    background-color: var(--input-bg);
-    color: var(--text-color);
-    border: 1px solid var(--primary-color);
-    border-radius: 5px;
-    padding: 0.5rem;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
-    overflow-y: auto;
     white-space: pre-wrap;
+    word-break: break-all;
 }
 
 @media (max-height: 600px) {
