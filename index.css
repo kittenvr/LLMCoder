@@ -98,16 +98,6 @@ textarea, .line-numbered-area {
     overflow: auto;
 }
 
-.status-area {
-    background-color: var(--status-bg);
-    padding: 0.5rem;
-    margin-top: 0.5rem;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    max-height: 4rem;
-    overflow-y: auto;
-}
-
 .line-numbered-area {
     white-space: pre-wrap;
     word-break: break-all;
@@ -127,11 +117,7 @@ textarea, .line-numbered-area {
         margin-bottom: 0.3rem;
     }
     
-    textarea, .status-area {
+    textarea, .line-numbered-area {
         font-size: 0.8rem;
-    }
-    
-    .status-area {
-        max-height: 3rem;
     }
 }

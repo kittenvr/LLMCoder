@@ -11,11 +11,6 @@ function copyToClipboard(code) {
     console.log('Code copied to clipboard');
 }
 
-function updateStatus(targetId, message) {
-    const targetElement = document.getElementById(targetId);
-    targetElement.textContent = message;
-}
-
 function formatCode(code) {
     // 統一將所有的行結束符轉換為 \n
     code = code.replace(/\r\n/g, '\n');
@@ -67,9 +62,7 @@ function handleCodeInput(e) {
     const code = e.clipboardData.getData('text');
     formattedCode = formatCode(code);
     lastCode = code;  // Store the original code
-    updateStatus('formatted-code', 'Code formatted and copied to clipboard.');
     document.getElementById('line-numbered-code').textContent = formattedCode;
-    copyToClipboard(formattedCode);
     copyToClipboard(formattedCode);
     e.target.value = code;
 }
@@ -88,12 +81,12 @@ function handleChangesInput(e) {
     try {
         changes = JSON.parse(changesInput);
     } catch (error) {
-        updateStatus('processed-code', 'Error: Invalid JSON input');
+        document.getElementById('result-area').textContent = 'Error: Invalid JSON input';
         return;
     }
 
     if (!lastCode) {
-        updateStatus('processed-code', 'Error: No code to process. Please format code first.');
+        document.getElementById('result-area').textContent = 'Error: No code to process. Please format code first.';
         return;
     }
 
@@ -113,7 +106,6 @@ function handleChangesInput(e) {
                                  `Expected: '${change.first_original_line.trim()}'\n` +
                                  `Found   : '${firstOriginalLine}'\n` +
                                  `Context:\n${context}`;
-            updateStatus('processed-code', errorMessage);
             document.getElementById('result-area').textContent = errorMessage;
             return;
         }
@@ -132,10 +124,8 @@ function handleChangesInput(e) {
     }
 
     const processedCode = lines.join('\n');
-    lastCode = processedCode;  // Update the stored code
-    formattedCode = formatCode(processedCode);  // Update the formatted code
-    updateStatus('processed-code', `Changes processed: ${sortedChanges.length} changes made.`);
-    document.getElementById('result-area').textContent = formattedCode;
+    document.getElementById('result-area').textContent = processedCode;
+    copyToClipboard(processedCode);
 }
 
 function handlePaste(e) {
