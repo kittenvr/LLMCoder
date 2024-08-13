@@ -67,7 +67,9 @@ function handleCodeInput(e) {
     const code = e.clipboardData.getData('text');
     formattedCode = formatCode(code);
     lastCode = code;  // Store the original code
-    updateStatus('formatted-code', `Code formatted and copied to clipboard.`);
+    updateStatus('formatted-code', 'Code formatted and copied to clipboard.');
+    document.getElementById('line-numbered-code').textContent = formattedCode;
+    copyToClipboard(formattedCode);
     copyToClipboard(formattedCode);
     e.target.value = code;
 }
