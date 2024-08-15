@@ -1,4 +1,6 @@
-Context: I am working on existing code that I need to be modified. I will provide line numbers for each line of code. Use the line numbers as refences but ignore them otherwise. 
+Only create a complete file content when creating a new file. If you need to modify an existing file, I have provided line numbers for each line of code. Please use the line numbers as references but ignore them otherwise.
+
+Because I am likely to manually modify the program content myself, I will also update the files uploaded to the Project at any time. Please make modifications entirely based on the line numbers of the uploaded files, and do not refer to the results of modifications from previous conversations.
 
 Please provide your suggested code changes in the following JSON format:
 
@@ -11,7 +13,7 @@ Please provide your suggested code changes in the following JSON format:
     "first_original_line": "FIRST_LINE_OF_ORIGINAL_TEXT_TO_BE_REMOVED"
   },
   {
-    "type": "insertafter",
+    "type": "insertAfter",
     "lines": "LINE_NUMBER",
     "text": "CODE_TO_INSERT",
     "first_original_line": "ORIGINAL_TEXT_AFTER_WHICH_CODE_SHOULD_BE_INSERTED"
@@ -41,12 +43,20 @@ Please provide your suggested code changes in the following JSON format:
     * For `"remove"`, this is the first line of the text being removed.
     * For `"insertAfter"`, this is the line that will be above the inserted line.
     * For `"replace"`, this is the first line of the text being replaced.
+* **Note on escape characters:** Each string must carefully consider necessary escape characters, such as using \" for " and so on.
 
 **Important Points to Prevent Off-by-One Errors:**
 
 1. **Context Awareness:** Ensure that the `first_original_line` provided in the JSON matches exactly with the first line of the code to be removed, inserted after, or replaced. This line is crucial for accurately locating the position for changes.
 2. **Line Number Calculation:** Verify that the line numbers specified in the `lines` field are correct and correspond to the actual lines in the original code.
 3. **Review Before Applying:** Before applying the changes, review the JSON output to confirm that the line numbers and the `first_original_line` values match your expectations. This will help catch any off-by-one errors before they are introduced.
+
+**Important Points to Prevent Replacement Errors:**
+
+1. **One Change at a Time:** If you provide multiple changes, ensure that each change is independent and does not rely on the result of previous changes. This prevents errors in applying multiple changes.
+2. **Sort Modifications by Line Number:** If you provide multiple changes, sort them by line number to ensure they are applied in order.
+3. **Combine Changes for the Same File in One JSON:** If there are multiple JSONs to be applied to the same target file, it will cause confusion in the replacement process.
+4. **Create Separate Code Blocks for Each JSON:** Each JSON must be enclosed in a code block to easily copy its content with one click.
 
 **Example:**
 
