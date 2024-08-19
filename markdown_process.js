@@ -7,14 +7,24 @@ function sortChanges(changes) {
 }
 
 function processChanges(lastCode, changesInput) {
+    if (!lastCode.trim()) {
+        return { errorMessage: 'Error: Empty code input' };
+    }
+    if (!changesInput.trim()) {
+        return { errorMessage: 'Error: Empty changes input' };
+    }
+
     const changes = parseMarkdownChanges(changesInput);
+
     if (changes.errorMessage) {
         return changes;
     }
 
-    let lines = lastCode.split('\n');
-    const sortedChanges = sortChanges(changes);
+    if (!Array.isArray(changes)) {
+        return { errorMessage: 'Error: No changes found'};
+    }
 
+    const sortedChanges = sortChanges(changes);
     for (const change of sortedChanges.reverse()) {
         const [start, end] = getLineRange(change, lines.length);
         
@@ -47,34 +57,38 @@ function processChanges(lastCode, changesInput) {
 
 function parseMarkdownChanges(changesInput) {
     const changes = [];
-    const files = changesInput.split(/^# /m).filter(Boolean);
+    const files = changesInput.trim().split(/^# /m).filter(Boolean);
+
+    if (files.length === 0) {
+        return { errorMessage: 'Error: No valid file sections found' };
+    }
 
     for (const file of files) {
         const [fileName, ...sections] = file.trim().split(/^## /m);
+        
+        if (!fileName.trim()) {
+            return { errorMessage: 'Error: Empty file name' };
+        }
+
+        if (sections.length === 0) {
+            return { errorMessage: `Error: No valid sections found in file ${fileName.trim()}` };
+        }
         
         for (const section of sections) {
             const [type, ...lines] = section.trim().split('\n');
             const change = { type, fileName: fileName.trim() };
 
-            if (type === 'Remove' || type === 'Replace') {
-                const fromLine = lines.find(line => line.startsWith('* From:'));
-                const toLine = lines.find(line => line.startsWith('* To  :'));
-                if (!fromLine || !toLine) {
-                    return { errorMessage: `Error: Invalid ${type} section format` };
-                }
-                change.from = fromLine.replace('* From:', '').trim();
-                change.to = toLine.replace('* To  :', '').trim();
-            } else if (type === 'InsertBetween') {
-                const fromLine = lines.find(line => line.startsWith('* From:'));
-                const toLine = lines.find(line => line.startsWith('* To  :'));
-                if (!fromLine || !toLine) {
-                    return { errorMessage: 'Error: Invalid InsertBetween section format' };
-                }
-                change.from = fromLine.replace('* From:', '').trim();
-                change.to = toLine.replace('* To  :', '').trim();
-            } else {
+            if (!['Remove', 'Replace', 'InsertBetween'].includes(type)) {
                 return { errorMessage: `Error: Unknown change type ${type}` };
             }
+
+            const fromLine = lines.find(line => line.trim().startsWith('* From: `'));
+            const toLine = lines.find(line => line.trim().startsWith('* To  : `'));
+            if (!fromLine || !toLine) {
+                return { errorMessage: `Error: Missing From or To in ${type} section` };
+            }
+            change.from = fromLine.replace('* From:', '').trim();
+            change.to = toLine.replace('* To  :', '').trim();
 
             if (type === 'Replace' || type === 'InsertBetween') {
                 const contentStart = lines.findIndex(line => line.startsWith('<pre>'));
@@ -87,6 +101,10 @@ function parseMarkdownChanges(changesInput) {
 
             changes.push(change);
         }
+    }
+
+    if (changes.length === 0) {
+        return { errorMessage: 'Error: No valid changes found' };
     }
 
     return changes;
