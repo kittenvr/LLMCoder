@@ -80,25 +80,25 @@ function parseMarkdownChanges(changesInput) {
         
         for (const section of sections) {
             const [type, ...lines] = section.trim().split('\n');
-            const change = { type, fileName: fileName.trim() };
+            const change = { type: type.replace(/^\*\*|\*\*$/g, ''), fileName: fileName.trim() };
 
-            if (!['Remove', 'Replace', 'InsertBetween'].includes(type)) {
-                return { errorMessage: `Error: Unknown change type ${type}` };
+            if (!['Remove', 'Replace', 'InsertBetween'].includes(change.type)) {
+                return { errorMessage: `Error: Unknown change type ${change.type}` };
             }
 
             const fromLine = lines.find(line => line.trim().startsWith('* From:'));
             const toLine = lines.find(line => line.trim().startsWith('* To:'));
             if (!fromLine || !toLine) {
-                return { errorMessage: `Error: Missing From or To in ${type} section` };
+                return { errorMessage: `Error: Missing From or To in ${change.type} section` };
             }
             change.from = fromLine.replace('* From:', '').trim().replace(/^`|`$/g, '');
             change.to = toLine.replace('* To:', '').trim().replace(/^`|`$/g, '');
 
-            if (type === 'Replace' || type === 'InsertBetween') {
-                const contentStart = lines.findIndex(line => line.startsWith('<pre>'));
-                const contentEnd = lines.findIndex(line => line.startsWith('</pre>'));
+            if (change.type === 'Replace' || change.type === 'InsertBetween') {
+                const contentStart = lines.findIndex(line => line.trim() === '```');
+                const contentEnd = lines.slice(contentStart + 1).findIndex(line => line.trim() === '```') + contentStart + 1;
                 if (contentStart === -1 || contentEnd === -1 || contentStart >= contentEnd) {
-                    return { errorMessage: `Error: Invalid content format in ${type} section` };
+                    return { errorMessage: `Error: Invalid content format in ${change.type} section` };
                 }
                 change.content = lines.slice(contentStart + 1, contentEnd).join('\n');
             }
@@ -113,7 +113,6 @@ function parseMarkdownChanges(changesInput) {
 
     return changes;
 }
-
 function getLineRange(change, totalLines) {
     const start = parseInt(change.from.split('.')[0]) - 1;
     let end;

@@ -9,23 +9,23 @@
 ----
 
 # FILE_NAME_1
-## Remove
+**Remove**
 * From: `FIRST_LINE_TO_BE_REMOVED`
 * To: `LAST_LINE_TO_BE_REMOVED`
 
-## InsertBetween
+**InsertBetween**
 * From: `FIRST_LINE_BEFORE_INSERTING`
 * To: `LAST_LINE_AFTER_INSERTING`
-<pre>
+```
 MULTILINE_TEXT_TO_INSERT
-</pre>
+```
 
-## Replace
+**Replace**
 * From: `FIRST_LINE_TO_BE_REPLACED`
 * To: `LAST_LINE_TO_BE_REPLACED`
-<pre>
+```
 MULTILINE_TEXT_TO_REPLACE
-</pre>
+```
 
 ----
 
@@ -42,29 +42,29 @@ MULTILINE_TEXT_TO_REPLACE
 ----
 
 # file1.css
-## InsertBetween
+**InsertBetween**
 * From: `13. h1 {`
 * To: `14. }`
-<pre>
+```
     color: var(--primary-color);
     font-size: 1.5rem;
-</pre>
+```
 
-## Remove
+**Remove**
 * From: `26.   display: flex;`
 * To: `26.   display: flex;`
 
 # file2.js
-## Replace
+**Replace**
 * From: `12.     function old_function() {`
 * To: `15.     }`
-<pre>
+```
     function new_function() {
       var result = 'New function'
 
       return result;
     }
-</pre>
+```
 
 ----
 
