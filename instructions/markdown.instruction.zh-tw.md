@@ -6,28 +6,28 @@
 
 請依以下 Markdown 格式提供您建議的程式更改:
 
----
+----
 
 # FILE_NAME_1
 ## Remove
-  * From: `FIRST_LINE_TO_BE_REMOVED`
-  * To  : `LAST_LINE_TO_BE_REMOVED`
+* From: `FIRST_LINE_TO_BE_REMOVED`
+* To: `LAST_LINE_TO_BE_REMOVED`
 
 ## InsertBetween
-  * From: `FIRST_LINE_BEFORE_INSERTING`
-  * To  : `LAST_LINE_AFTER_INSERTING`
+* From: `FIRST_LINE_BEFORE_INSERTING`
+* To: `LAST_LINE_AFTER_INSERTING`
 <pre>
 MULTILINE_TEXT_TO_INSERT
 </pre>
 
 ## Replace
-  * From: `FIRST_LINE_TO_BE_REPLACED`
-  * To  : `LAST_LINE_TO_BE_REPLACED`
+* From: `FIRST_LINE_TO_BE_REPLACED`
+* To: `LAST_LINE_TO_BE_REPLACED`
 <pre>
 MULTILINE_TEXT_TO_REPLACE
 </pre>
 
----
+----
 
 ## 防止替換錯誤之重要事項
 
@@ -35,28 +35,29 @@ MULTILINE_TEXT_TO_REPLACE
 2. **原始程式必須附上行號**: From/To 所提供的原始程式必須附上行號，保證替換位置不會錯誤。
 3. **修改項目依行號排序**: 如果您提供多個更改，請按行號順序對它們進行排序，以確保它們按順序套用。
 4. **合併相近異動**: 請仔細考慮相近的多處異動，合併為一個連續的異動項目，而相距較遠的異動則分離項目。以上是為避免出錯及節省輸出字元數量。
+5. **必須包括指定分隔線**: Markdown 文件的前後必須包括指定的四個減號分隔線。
 
 ## 範例
 
----
+----
 
 # file1.css
-## Remove
-  * From: `13.   display: flex;`
-  * To  : `13.   display: flex;`
-
 ## InsertBetween
-  * From: `25. h1 {`
-  * To  : `26. }`
+* From: `13. h1 {`
+* To: `14. }`
 <pre>
     color: var(--primary-color);
     font-size: 1.5rem;
 </pre>
 
+## Remove
+* From: `26.   display: flex;`
+* To: `26.   display: flex;`
+
 # file2.js
 ## Replace
-  * From: `12.     function old_function() {`
-  * To  : `15.     }`
+* From: `12.     function old_function() {`
+* To: `15.     }`
 <pre>
     function new_function() {
       var result = 'New function'
@@ -65,6 +66,6 @@ MULTILINE_TEXT_TO_REPLACE
     }
 </pre>
 
----
+----
 
 如果您理解我的指示，請用一句話回應表示。

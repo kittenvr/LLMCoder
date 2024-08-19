@@ -24,6 +24,7 @@ function processChanges(lastCode, changesInput) {
         return { errorMessage: 'Error: No changes found'};
     }
 
+    let lines = lastCode.split('\n');
     const sortedChanges = sortChanges(changes);
     for (const change of sortedChanges.reverse()) {
         const [start, end] = getLineRange(change, lines.length);
@@ -82,13 +83,13 @@ function parseMarkdownChanges(changesInput) {
                 return { errorMessage: `Error: Unknown change type ${type}` };
             }
 
-            const fromLine = lines.find(line => line.trim().startsWith('* From: `'));
-            const toLine = lines.find(line => line.trim().startsWith('* To  : `'));
+            const fromLine = lines.find(line => line.trim().startsWith('* From:'));
+            const toLine = lines.find(line => line.trim().startsWith('* To:'));
             if (!fromLine || !toLine) {
                 return { errorMessage: `Error: Missing From or To in ${type} section` };
             }
-            change.from = fromLine.replace('* From:', '').trim();
-            change.to = toLine.replace('* To  :', '').trim();
+            change.from = fromLine.replace('* From:', '').trim().replace(/^`|`$/g, '');
+            change.to = toLine.replace('* To:', '').trim().replace(/^`|`$/g, '');
 
             if (type === 'Replace' || type === 'InsertBetween') {
                 const contentStart = lines.findIndex(line => line.startsWith('<pre>'));
