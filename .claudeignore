@@ -1,6 +1,6 @@
-.claudeignore
-.linenumberignore
-.syncignore
+images/
+instructions/
+.*
 LICENSE
 README.md
 SyncCommand*
