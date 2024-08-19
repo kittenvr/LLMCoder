@@ -1,5 +1,5 @@
 images/
-instructions/
+#instructions/
 .*
 LICENSE
 README.md
