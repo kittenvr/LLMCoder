@@ -70,11 +70,16 @@ function handleCodeInput(e) {
     e.target.value = code;
 }
 
-
 function handleChangesInput(e) {
     e.preventDefault();
     const changesInput = e.clipboardData.getData('text').replace(/\r\n/g, '\n');
     e.target.value = changesInput;
+
+    if (!lastCode) {
+        document.getElementById('result-area').textContent = 'Error: No code to process. Please format code first.';
+        return;
+    }
+
     const result = processChanges(lastCode, changesInput);
     document.getElementById('result-area').textContent = result.processedCode || result.errorMessage;
     if (result.processedCode) {
@@ -82,20 +87,8 @@ function handleChangesInput(e) {
         document.getElementById('code-input').value = '';
         document.getElementById('line-numbered-code').textContent = '';
         document.getElementById('code-input').focus();
-    }
-
-    if (!lastCode) {
-        document.getElementById('result-area').textContent = 'Error: No code to process. Please format code first.';
         return;
     }
-
-
-    const processedCode = lines.join('\n');
-    document.getElementById('result-area').textContent = processedCode;
-    copyToClipboard(processedCode);
-    document.getElementById('code-input').value = '';
-    document.getElementById('line-numbered-code').textContent = '';
-    document.getElementById('code-input').focus();
 }
 
 function handlePaste(e) {
