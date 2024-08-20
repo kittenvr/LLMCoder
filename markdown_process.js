@@ -95,8 +95,8 @@ function parseMarkdownChanges(changesInput) {
             change.to = toLine.replace('* To:', '').trim().replace(/^`|`$/g, '');
 
             if (change.type === 'Replace' || change.type === 'InsertBetween') {
-                const contentStart = lines.findIndex(line => line.trim() === '```');
-                const contentEnd = lines.slice(contentStart + 1).findIndex(line => line.trim() === '```') + contentStart + 1;
+                const contentStart = lines.findIndex(line => line.trim().startsWith('````'));
+                const contentEnd = lines.slice(contentStart + 1).findIndex(line => line.trim() === '````') + contentStart + 1;
                 if (contentStart === -1 || contentEnd === -1 || contentStart >= contentEnd) {
                     return { errorMessage: `Error: Invalid content format in ${change.type} section` };
                 }

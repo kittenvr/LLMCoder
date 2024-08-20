@@ -5,6 +5,8 @@ Inspired from [hannesrudolph/llm-code-helper](https://github.com/hannesrudolph/l
 
 Then I added auto focus, auto Format code/Process Changes after pasting, and auto clear. Fit whole page without scroll bar. Make the whole process even easier.
 
+It's now transforming to Markdown format.
+
 Just clone this repo, and open the `index.html` file from your browser, you don't need Python or any installation.
 
 Or you can open my page online: [LLM Coder](https://christorng.github.io/LLMCoder/). It runs purely on your browser, no data is sent to any server.
