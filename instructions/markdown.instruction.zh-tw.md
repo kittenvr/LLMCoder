@@ -4,9 +4,9 @@
 
 因為我很有可能自行手動修改程式內容，我也會隨時更新 Project 內上傳的檔案，請完全依據上傳檔案的行號進行修改，不要參考之前對話中已經修改後的結果。
 
-請依以下 Markdown 格式提供您建議的程式更改:
+依以下 Markdown 格式提供您建議的程式更改:
 
-----
+<antArtifact identifier="markdown-diff" type="text/markdown" language="markdown" title="異動內容">
 # FILE_NAME_1 FILE_NAME_1_FIRST_LINE_TIMESTAMP
 **Remove**
 * From: `FIRST_LINE_TO_BE_REMOVED`
@@ -25,12 +25,12 @@ MULTILINE_TEXT_TO_INSERT
 ````FILE_NAME_1_MARKDOWN_EXTENSION
 MULTILINE_TEXT_TO_REPLACE
 ````
-----
+</antArtifact>
 
 ## 防止替換錯誤之重要事項
 
 1. **檔案修改日期時間**: 我會在附上行號的文件檔之第一行附上檔案修改日期時間，請在輸出之異動檔名後附加該日期時間。
-2. **必須包括指定分隔線**: Markdown 文件的前後必須包括指定的四個減號分隔線，多行程式碼區塊必須使用四個 ` 字元。
+2. **必須包括指定分隔項目**: Markdown 文件的前後必須包括指定的 XML，多行程式碼區塊必須使用四個 ` 字元。
 3. **一次一個更改**: 如果您提供多個異動，請確保每個異動都獨立且不依賴於先前更改的結果，這樣可以避免錯誤地套用多個異動。
 4. **原始程式必須附上行號**: From/To 所提供的原始程式必須附上行號，保證替換位置不會錯誤。
 5. **修改項目依行號排序**: 如果您提供多個更改，請按行號順序對它們進行排序，以確保它們按順序套用。
@@ -38,7 +38,7 @@ MULTILINE_TEXT_TO_REPLACE
 
 ## 範例
 
-----
+<antArtifact identifier="markdown-diff" type="text/markdown" language="markdown" title="異動內容">
 # file1.css 2024-08-14 08:20:42
 **InsertBetween**
 * From: `13. h1 {`
@@ -63,6 +63,6 @@ MULTILINE_TEXT_TO_REPLACE
       return result;
     }
 ````
-----
+</antArtifact>
 
 如果您理解我的指示，請用一句話回應表示。
