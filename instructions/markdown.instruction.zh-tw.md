@@ -4,7 +4,7 @@
 
 因為我很有可能自行手動修改程式內容，我也會隨時更新 Project 內上傳的檔案，請完全依據上傳檔案的行號進行修改，不要參考之前對話中已經修改後的結果。
 
-請在 Artifact 中，依以下 Markdown 格式提供您建議的程式更改:
+請依以下 Markdown 格式提供您建議的程式更改:
 
 ----
 # FILE_NAME_1 FILE_NAME_1_FIRST_LINE_TIMESTAMP

@@ -14,7 +14,8 @@ function processChanges(lastCode, changesInput) {
         return { errorMessage: 'Error: Empty changes input' };
     }
 
-    const changes = parseMarkdownChanges(changesInput);
+    let lines = lastCode.split('\n');
+    const changes = parseMarkdownChanges(changesInput, lines);
 
     if (changes.errorMessage) {
         return changes;
@@ -24,7 +25,6 @@ function processChanges(lastCode, changesInput) {
         return { errorMessage: 'Error: No changes found'};
     }
 
-    let lines = lastCode.split('\n');
     const sortedChanges = sortChanges(changes);
     for (const change of sortedChanges.reverse()) {
         const [start, end] = getLineRange(change, lines.length);
@@ -56,7 +56,7 @@ function processChanges(lastCode, changesInput) {
     return { processedCode: lines.join('\n') };
 }
 
-function parseMarkdownChanges(changesInput) {
+function parseMarkdownChanges(changesInput, lines) {
     // Remove surrounding separator lines and content if present
     const cleanedInput = changesInput.replace(/^[\s\S]*?----\n([\s\S]*?)\n----[\s\S]*$/, '$1').trim();
     
@@ -68,10 +68,11 @@ function parseMarkdownChanges(changesInput) {
     }
 
     for (const file of files) {
-        const [fileNameAndTimestamp, ...sections] = file.trim().split(/^## /m);
+        const [fileNameAndTimestamp, ...sections] = file.trim().split(/^\*\*/m);
         
-        const [fileName, timestamp] = fileNameAndTimestamp.trim().split(' ');
-        
+        const [fileName, datepart, timepart] = fileNameAndTimestamp.trim().split(' ');
+        const timestamp = `${datepart} ${timepart}`
+
         if (!fileName.trim()) {
             return { errorMessage: 'Error: Empty file name' };
         }
@@ -85,7 +86,11 @@ function parseMarkdownChanges(changesInput) {
         }
         
         for (const section of sections) {
-            const change = { type: type.replace(/^\*\*|\*\*$/g, ''), fileName: fileName.trim() };
+            const change = {
+                fileName: fileName.trim(),
+                timestamp: timestamp,
+                type: section.substring(0, section.indexOf('**'))
+            };
 
             if (!['Remove', 'Replace', 'InsertBetween'].includes(change.type)) {
                 return { errorMessage: `Error: Unknown change type ${change.type}` };
