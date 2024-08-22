@@ -39,7 +39,7 @@ function processChanges(lastCode, changesInput) {
                                  `Context:\n${context}`;
             return { errorMessage };
         }
-
+        
         switch (change.type) {
             case 'Remove':
                 lines.splice(start, end - start + 1);
@@ -96,9 +96,9 @@ function parseMarkdownChanges(changesInput) {
                 return { errorMessage: `Error: Unknown change type ${change.type}` };
             }
 
-            const lines = section.split('\n');
-            const fromLine = lines.find(line => line.trim().startsWith('* From:'));
-            const toLine = lines.find(line => line.trim().startsWith('* To:'));
+            const sectionLines = section.split('\n');
+            const fromLine = sectionLines.find(line => line.trim().startsWith('* From:'));
+            const toLine = sectionLines.find(line => line.trim().startsWith('* To:'));
             if (!fromLine || !toLine) {
                 return { errorMessage: `Error: Missing From or To in ${change.type} section` };
             }
