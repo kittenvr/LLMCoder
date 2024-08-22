@@ -68,10 +68,16 @@ function parseMarkdownChanges(changesInput) {
     }
 
     for (const file of files) {
-        const [fileName, ...sections] = file.trim().split(/^## /m);
+        const [fileNameAndTimestamp, ...sections] = file.trim().split(/^## /m);
+        
+        const [fileName, timestamp] = fileNameAndTimestamp.trim().split(' ');
         
         if (!fileName.trim()) {
             return { errorMessage: 'Error: Empty file name' };
+        }
+
+        if (!timestamp || !/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(timestamp)) {
+            return { errorMessage: `Error: Invalid or missing timestamp for file ${fileName.trim()}` };
         }
 
         if (sections.length === 0) {
@@ -79,7 +85,6 @@ function parseMarkdownChanges(changesInput) {
         }
         
         for (const section of sections) {
-            const [type, ...lines] = section.trim().split('\n');
             const change = { type: type.replace(/^\*\*|\*\*$/g, ''), fileName: fileName.trim() };
 
             if (!['Remove', 'Replace', 'InsertBetween'].includes(change.type)) {
@@ -92,6 +97,7 @@ function parseMarkdownChanges(changesInput) {
                 return { errorMessage: `Error: Missing From or To in ${change.type} section` };
             }
             change.from = fromLine.replace('* From:', '').trim().replace(/^`|`$/g, '');
+            change.timestamp = timestamp;
             change.to = toLine.replace('* To:', '').trim().replace(/^`|`$/g, '');
 
             if (change.type === 'Replace' || change.type === 'InsertBetween') {
