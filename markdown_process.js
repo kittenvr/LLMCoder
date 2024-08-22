@@ -96,13 +96,13 @@ function parseMarkdownChanges(changesInput) {
                 return { errorMessage: `Error: Unknown change type ${change.type}` };
             }
 
+            const lines = section.split('\n');
             const fromLine = lines.find(line => line.trim().startsWith('* From:'));
             const toLine = lines.find(line => line.trim().startsWith('* To:'));
             if (!fromLine || !toLine) {
                 return { errorMessage: `Error: Missing From or To in ${change.type} section` };
             }
             change.from = fromLine.replace('* From:', '').trim().replace(/^`|`$/g, '');
-            change.timestamp = timestamp;
             change.to = toLine.replace('* To:', '').trim().replace(/^`|`$/g, '');
 
             if (change.type === 'Replace' || change.type === 'InsertBetween') {
