@@ -31,15 +31,21 @@ function processChanges(lastCode, changesInput) {
 
         const firstOriginalLine = lines[start].trim();
         const lastOriginalLine = lines[end].trim();
-        if (change.from.split('.').slice(1).join('.').trim() !== firstOriginalLine || 
-            (change.type !== 'InsertBetween' && change.to.split('.').slice(1).join('.').trim() !== lastOriginalLine)) {
-            const contextLines = lines.slice(Math.max(0, start - 2), Math.min(lines.length, end + 3));
+        if (change.from.split('.').slice(1).join('.').trim() !== firstOriginalLine) {
+            const contextLines = lines.slice(Math.max(0, start - 2), Math.min(lines.length, start + 3));
             const context = contextLines.map((line, i) => `${i + Math.max(0, start - 2) + 1}: ${line}`).join('\n');
-            const errorMessage = `Error: Original text mismatch.\n` +
-                                 `Expected From: '${change.from.split('.').slice(1).join('.').trim()}'\n` +
-                                 `Found From   : '${firstOriginalLine}'\n` +
-                                 `Expected To  : '${change.to.split('.').slice(1).join('.').trim()}'\n` +
-                                 `Found To     : '${lastOriginalLine}'\n` +
+            const errorMessage = `Error: Original text mismatch at From line ${start + 1}.\n` +
+                                 `Expected From: ${start + 1}. ${change.from.split('.').slice(1).join('.').trim()}\n` +
+                                 `Found    From: ${start + 1}. ${firstOriginalLine}\n` +
+                                 `Context:\n${context}`;
+            return { errorMessage };
+        }
+        if (change.to.split('.').slice(1).join('.').trim() !== lastOriginalLine) {
+            const contextLines = lines.slice(Math.max(0, end - 2), Math.min(lines.length, end + 3));
+            const context = contextLines.map((line, i) => `${i + Math.max(0, end - 2) + 1}: ${line}`).join('\n');
+            const errorMessage = `Error: Original text mismatch at To line ${end + 1}.\n` +
+                                 `Expected To: ${end + 1}. ${change.to.split('.').slice(1).join('.').trim()}\n` +
+                                 `Found    To: ${end + 1}. ${lastOriginalLine}\n` +
                                  `Context:\n${context}`;
             return { errorMessage };
         }
@@ -52,7 +58,7 @@ function processChanges(lastCode, changesInput) {
                 lines.splice(start + 1, 0, ...change.content.split('\n'));
                 break;
             case 'Replace':
-                lines.splice(start, end - start + 2, ...change.content.split('\n'));
+                lines.splice(start, end - start, ...change.content.split('\n'));
                 break;
         }
     }
