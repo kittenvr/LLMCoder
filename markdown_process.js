@@ -28,7 +28,7 @@ function processChanges(lastCode, changesInput) {
     const sortedChanges = sortChanges(changes);
     for (const change of sortedChanges.reverse()) {
         const [start, end] = getLineRange(change, lines.length);
-        
+
         const firstOriginalLine = lines[start].trim();
         if (change.from.split('.').slice(1).join('.').trim() !== firstOriginalLine) {
             const contextLines = lines.slice(Math.max(0, start - 2), Math.min(lines.length, end + 3));
@@ -106,12 +106,12 @@ function parseMarkdownChanges(changesInput) {
             change.to = toLine.replace('* To:', '').trim().replace(/^`|`$/g, '');
 
             if (change.type === 'Replace' || change.type === 'InsertBetween') {
-                const contentStart = lines.findIndex(line => line.trim().startsWith('````'));
-                const contentEnd = lines.slice(contentStart + 1).findIndex(line => line.trim() === '````') + contentStart + 1;
+                const contentStart = sectionLines.findIndex(line => line.trim().startsWith('````'));
+                const contentEnd = sectionLines.slice(contentStart + 1).findIndex(line => line.trim() === '````') + contentStart + 1;
                 if (contentStart === -1 || contentEnd === -1 || contentStart >= contentEnd) {
                     return { errorMessage: `Error: Invalid content format in ${change.type} section` };
                 }
-                change.content = lines.slice(contentStart + 1, contentEnd).join('\n');
+                change.content = sectionLines.slice(contentStart + 1, contentEnd).join('\n');
             }
 
             changes.push(change);
