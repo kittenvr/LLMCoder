@@ -30,16 +30,20 @@ function processChanges(lastCode, changesInput) {
         const [start, end] = getLineRange(change, lines.length);
 
         const firstOriginalLine = lines[start].trim();
-        if (change.from.split('.').slice(1).join('.').trim() !== firstOriginalLine) {
+        const lastOriginalLine = lines[end].trim();
+        if (change.from.split('.').slice(1).join('.').trim() !== firstOriginalLine || 
+            (change.type !== 'InsertBetween' && change.to.split('.').slice(1).join('.').trim() !== lastOriginalLine)) {
             const contextLines = lines.slice(Math.max(0, start - 2), Math.min(lines.length, end + 3));
             const context = contextLines.map((line, i) => `${i + Math.max(0, start - 2) + 1}: ${line}`).join('\n');
-            const errorMessage = `Error: Original text mismatch at line ${start + 1}.\n` +
-                                 `Expected: '${change.from.split('.').slice(1).join('.').trim()}'\n` +
-                                 `Found   : '${firstOriginalLine}'\n` +
+            const errorMessage = `Error: Original text mismatch.\n` +
+                                 `Expected From: '${change.from.split('.').slice(1).join('.').trim()}'\n` +
+                                 `Found From   : '${firstOriginalLine}'\n` +
+                                 `Expected To  : '${change.to.split('.').slice(1).join('.').trim()}'\n` +
+                                 `Found To     : '${lastOriginalLine}'\n` +
                                  `Context:\n${context}`;
             return { errorMessage };
         }
-        
+
         switch (change.type) {
             case 'Remove':
                 lines.splice(start, end - start + 1);
