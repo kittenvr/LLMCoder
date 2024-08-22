@@ -14,8 +14,7 @@ function processChanges(lastCode, changesInput) {
         return { errorMessage: 'Error: Empty changes input' };
     }
 
-    let lines = lastCode.split('\n');
-    const changes = parseMarkdownChanges(changesInput, lines);
+    const changes = parseMarkdownChanges(changesInput);
 
     if (changes.errorMessage) {
         return changes;
@@ -25,6 +24,7 @@ function processChanges(lastCode, changesInput) {
         return { errorMessage: 'Error: No changes found'};
     }
 
+    let lines = lastCode.split('\n');
     const sortedChanges = sortChanges(changes);
     for (const change of sortedChanges.reverse()) {
         const [start, end] = getLineRange(change, lines.length);
@@ -56,7 +56,7 @@ function processChanges(lastCode, changesInput) {
     return { processedCode: lines.join('\n') };
 }
 
-function parseMarkdownChanges(changesInput, lines) {
+function parseMarkdownChanges(changesInput) {
     // Remove surrounding separator lines and content if present
     const cleanedInput = changesInput.replace(/^[\s\S]*?----\n([\s\S]*?)\n----[\s\S]*$/, '$1').trim();
     
