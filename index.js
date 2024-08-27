@@ -14,7 +14,7 @@ function copyToClipboard(code, messageId) {
     
     setTimeout(() => {
         messageElement.textContent = '';
-    }, 1000);
+    }, 3000);
 }
 
 function formatCode(code) {
