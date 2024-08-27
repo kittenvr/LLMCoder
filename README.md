@@ -4,7 +4,7 @@
 
 ## Purpose
 
-LLMCoder is a tool designed to streamline the process of code modification using Large Language Models (LLMs). It allows you to:
+LLMCoder is a tool designed to streamline the process of code modification using Large Language Models (LLMs), especially for Claude. It allows you to:
 
 1. Paste your source code and generate line-numbered versions.
 2. Use a custom Markdown diff format to guide LLMs in generating code modifications.
