@@ -1,14 +1,33 @@
 let lastCode = '';
 let formattedCode = '';
 
-function copyToClipboard(code) {
+function copyToClipboard(code, elementId) {
     const tempTextArea = document.createElement('textarea');
     tempTextArea.value = code;
     document.body.appendChild(tempTextArea);
     tempTextArea.select();
     document.execCommand('copy');
     document.body.removeChild(tempTextArea);
-    console.log('Code copied to clipboard');
+    
+    // Show copied message
+    const messageElement = document.createElement('div');
+    messageElement.textContent = 'Copied to clipboard';
+    messageElement.style.position = 'absolute';
+    messageElement.style.top = '5px';
+    messageElement.style.right = '5px';
+    messageElement.style.backgroundColor = 'rgba(0,0,0,0.7)';
+    messageElement.style.color = 'white';
+    messageElement.style.padding = '5px 10px';
+    messageElement.style.borderRadius = '5px';
+    messageElement.style.fontSize = '12px';
+    
+    const targetElement = document.getElementById(elementId);
+    targetElement.style.position = 'relative';
+    targetElement.appendChild(messageElement);
+    
+    setTimeout(() => {
+        targetElement.removeChild(messageElement);
+    }, 1000);
 }
 
 function formatCode(code) {
@@ -63,7 +82,7 @@ function handleCodeInput(e) {
     formattedCode = formatCode(code);
     lastCode = code;  // Store the original code
     document.getElementById('line-numbered-code').textContent = formattedCode;
-    copyToClipboard(formattedCode);
+    copyToClipboard(formattedCode, 'line-numbered-code');
     document.getElementById('changes-input').value = '';
     document.getElementById('result-area').textContent = '';
     document.getElementById('changes-input').focus();
@@ -83,7 +102,7 @@ function handleChangesInput(e) {
     const result = processChanges(lastCode, changesInput);
     document.getElementById('result-area').textContent = result.processedCode || result.errorMessage;
     if (result.processedCode) {
-        copyToClipboard(result.processedCode);
+        copyToClipboard(result.processedCode, 'result-area');
         document.getElementById('code-input').value = '';
         document.getElementById('line-numbered-code').textContent = '';
         document.getElementById('code-input').focus();

@@ -1,8 +1,7 @@
-.\index.css
-.\index.html
-.\index.js
 .\json_process.js
 .\markdown_process.js
 instructions\json.instruction.en.md
 instructions\json.instruction.zh-tw.md
 instructions\markdown-diff.instruction.zh-tw.md
+instructions\markdown.instruction.en.md
+instructions\markdown.instruction.zh-tw.md
