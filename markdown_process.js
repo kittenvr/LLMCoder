@@ -59,6 +59,9 @@ function processChanges(lastCode, changesInput) {
                 break;
             case 'Replace':
                 lines.splice(start, end - start + 1, ...change.content.split('\n'));
+                //lines.splice(start, end - start + 1, ...change.content.split('\n').map((line, index, array) => 
+                //    index === array.length - 1 ? line + '\n' : line
+                //));
                 break;
         }
     }
@@ -67,6 +70,8 @@ function processChanges(lastCode, changesInput) {
 }
 
 function parseMarkdownChanges(changesInput) {
+    // Remove surrounding separator lines and content if present
+    //const cleanedInput = changesInput.replace(/^[\s\S]*?----\n([\s\S]*?)\n----[\s\S]*$/, '$1').trim();
     // Remove surrounding XML tags if present
     //const cleanedInput = changesInput.replace(/<antArtifact[^>]*>([\s\S]*?)<\/antArtifact>/g, '$1').trim();
     
