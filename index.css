@@ -106,8 +106,8 @@ textarea, .line-numbered-area {
     font-family: 'Fira Code', monospace;
     font-size: 0.9rem;
     resize: none;
-    overflow-x: auto;
-    white-space: pre-wrap;
+    overflow: auto;
+    white-space: pre;
 }
 
 @media (max-height: 600px) {
