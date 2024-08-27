@@ -84,6 +84,17 @@ h2 {
     margin-left: 1rem;
 }
 
+.output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.copy-message {
+    font-size: 0.8rem;
+    color: var(--text-color);
+}
 
 textarea, .line-numbered-area {
     flex: 1;

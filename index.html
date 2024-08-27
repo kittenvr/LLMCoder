@@ -24,7 +24,10 @@
                 <textarea id="code-input" name="code" placeholder="Paste and auto format code"></textarea>
             </div>
             <div class="output-area">
-                <h2>Formatted Code</h2>
+                <div class="output-header">
+                    <h2>Formatted Code</h2>
+                    <span id="formatted-code-message" class="copy-message"></span>
+                </div>
                 <div id="line-numbered-code" class="line-numbered-area"></div>
             </div>
         </div>
@@ -36,7 +39,10 @@
                 <textarea id="changes-input" name="changes" placeholder="Paste Markdown string"></textarea>
             </div>
             <div class="output-area">
-                <h2>Result</h2>
+                <div class="output-header">
+                    <h2>Result</h2>
+                    <span id="result-message" class="copy-message"></span>
+                </div>
                 <div id="result-area" class="line-numbered-area"></div>
             </div>
         </div>
