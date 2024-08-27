@@ -19,4 +19,10 @@ Just clone this repo, and open the `index.html` file from your browser, you don'
 
 Or you can open my page online: [LLM Coder](https://christorng.github.io/LLMCoder/). It runs purely on your browser, no data is sent to any server.
 
-This repo is planning to integrated into [LLMCoderSync](https://github.com/ChrisTorng/LLMCoderSync), you can use them together now. Please reference to the README.md of [LLMCoderSync](https://github.com/ChrisTorng/LLMCoderSync).
+Set Claude's Project custom instructions with then content of [instructions\markdown.instruction.en.md](instructions\markdown.instruction.en.md) after your own specific instructions.
+
+Ask Claude to modify code, it should follow the instructions, output Markdown diff.
+
+On the LLMCoder page, paste the source code, then paste the Markdown, it will apply the changes to the source and copy to clipboard automatically. You can paste back to IDE to overwrite the source.
+
+This repo is planning to integrated into [LLMCoderSync](https://github.com/ChrisTorng/LLMCoderSync), you can use them together now. Please refer to the README.md of [LLMCoderSync](https://github.com/ChrisTorng/LLMCoderSync).
