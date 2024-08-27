@@ -58,7 +58,7 @@ function processChanges(lastCode, changesInput) {
                 lines.splice(start + 1, 0, ...change.content.split('\n'));
                 break;
             case 'Replace':
-                lines.splice(start, end - start, ...change.content.split('\n'));
+                lines.splice(start, end - start + 1, ...change.content.split('\n'));
                 break;
         }
     }
@@ -67,11 +67,11 @@ function processChanges(lastCode, changesInput) {
 }
 
 function parseMarkdownChanges(changesInput) {
-    // Remove surrounding separator lines and content if present
-    const cleanedInput = changesInput.replace(/^[\s\S]*?----\n([\s\S]*?)\n----[\s\S]*$/, '$1').trim();
+    // Remove surrounding XML tags if present
+    //const cleanedInput = changesInput.replace(/<antArtifact[^>]*>([\s\S]*?)<\/antArtifact>/g, '$1').trim();
     
     const changes = [];
-    const files = cleanedInput.split(/^# /m).filter(Boolean);
+    const files = changesInput.split(/^# /m).filter(Boolean);
 
     if (files.length === 0) {
         return { errorMessage: 'Error: No valid file sections found' };
@@ -134,6 +134,7 @@ function parseMarkdownChanges(changesInput) {
 
     return changes;
 }
+
 function getLineRange(change, totalLines) {
     const start = parseInt(change.from.split('.')[0]) - 1;
     let end;
