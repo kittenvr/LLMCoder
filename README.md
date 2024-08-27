@@ -35,7 +35,7 @@ LLMCoder was inspired by [hannesrudolph/llm-code-helper](https://github.com/hann
 
 ### Integration with Claude
 
-1. Set Claude's Project custom instructions with the content of [instructions\markdown.instruction.en.md](instructions\markdown.instruction.en.md) after your own specific instructions.
+1. Set Claude's Project custom instructions with the content of [instructions/markdown.instruction.en.md](instructions/markdown.instruction.en.md) after your own specific instructions.
 2. Ask Claude to modify code. It should follow the instructions and output a Markdown diff.
 
 ### Using LLMCoder
