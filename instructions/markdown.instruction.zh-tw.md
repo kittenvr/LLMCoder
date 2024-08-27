@@ -7,7 +7,9 @@
 依以下 Markdown 格式提供您建議的程式更改:
 
 <antArtifact identifier="markdown-diff" type="text/markdown" language="markdown" title="異動內容">
+
 # FILE_NAME_1 FILE_NAME_1_FIRST_LINE_TIMESTAMP
+
 **Remove**
 * From: `FIRST_LINE_TO_BE_REMOVED`
 * To: `LAST_LINE_TO_BE_REMOVED`
@@ -40,7 +42,9 @@ MULTILINE_TEXT_TO_REPLACE
 ## 範例
 
 <antArtifact identifier="markdown-diff" type="text/markdown" language="markdown" title="異動內容">
+
 # file1.css 2024-08-14 08:20:42
+
 **InsertBetween**
 * From: `13. h1 {`
 * To: `14. }`
@@ -54,6 +58,7 @@ MULTILINE_TEXT_TO_REPLACE
 * To: `26.   display: flex;`
 
 # file2.js 2024-08-15 18:04:05
+
 **Replace**
 * From: `12.     function old_function() {`
 * To: `15.     }`
