@@ -52,7 +52,7 @@ Read the [instructions/markdown.instruction.en.md](instructions/markdown.instruc
 > 
 > **Replace**
 > * From: `12.     function old_function() {`
-> * To: `15.     return value;`
+> * To: `14.     return value;`
 > ````js
 >     function new_function() {
 >       var result = 'New function'

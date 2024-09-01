@@ -142,12 +142,7 @@ function parseMarkdownChanges(changesInput) {
 
 function getLineRange(change, totalLines) {
     const start = parseInt(change.from.split('.')[0]) - 1;
-    let end;
-    if (change.type === 'InsertBetween') {
-        end = start;
-    } else {
-        end = parseInt(change.to.split('.')[0]) - 1;
-    }
+    const end = parseInt(change.to.split('.')[0]) - 1;
     return [
         Math.max(0, Math.min(start, totalLines - 1)),
         Math.max(0, Math.min(end, totalLines - 1))
