@@ -25,6 +25,40 @@ LLMCoder was inspired by [hannesrudolph/llm-code-helper](https://github.com/hann
   - Avoids escape character problems (e.g., forgetting to use \\" in JSON)
   - Improves readability of diff output
   - Enhances manual correction capabilities
+- Additional
+  - Utilize Claude Artifact
+  - Multiple files (conversion not supported yet) with timestamp
+  - Syntax highlighting
+
+Read the [instructions/markdown.instruction.en.md](instructions/markdown.instruction.en.md) to understand the detail of Markdown diff.
+
+## Markdown diff sample
+
+> # file1.css 2024-08-14 08:20:42
+> 
+> **InsertBetween**
+> * From: `13. h1 {`
+> * To: `14. }`
+> ````css
+>   color: var(--primary-color);
+>   font-size: 1.5rem;
+> ````
+> 
+> **Remove**
+> * From: `26.   display: flex;`
+> * To: `26.   display: flex;`
+> 
+> # file2.js 2024-08-15 18:04:05
+> 
+> **Replace**
+> * From: `12.     function old_function() {`
+> * To: `15.     return value;`
+> ````js
+>     function new_function() {
+>       var result = 'New function'
+> 
+>       return result;
+> ````
 
 ## Usage
 
