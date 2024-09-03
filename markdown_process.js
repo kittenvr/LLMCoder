@@ -76,65 +76,87 @@ function parseMarkdownChanges(changesInput) {
     //const cleanedInput = changesInput.replace(/<antArtifact[^>]*>([\s\S]*?)<\/antArtifact>/g, '$1').trim();
     
     const changes = [];
-    const files = changesInput.split(/^# /m).filter(Boolean);
+    let currentFile = null;
+    let inCodeBlock = false;
+    const lines = changesInput.split('\n');
 
-    if (files.length === 0) {
-        return { errorMessage: 'Error: No valid file sections found' };
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        if (line.startsWith('# ') && !inCodeBlock) {
+            if (currentFile) {
+                changes.push(...parseFileChanges(currentFile));
+            }
+            currentFile = { name: line.substring(2).trim(), sections: [] };
+        } else if (line.startsWith('**') && !inCodeBlock) {
+            if (currentFile) {
+                currentFile.sections.push({ type: line.substring(2).trim(), lines: [] });
+            }
+        } else if (line.startsWith('````')) {
+            inCodeBlock = !inCodeBlock;
+            if (currentFile && currentFile.sections.length > 0) {
+                currentFile.sections[currentFile.sections.length - 1].lines.push(line);
+            }
+        } else {
+            if (currentFile && currentFile.sections.length > 0) {
+                currentFile.sections[currentFile.sections.length - 1].lines.push(line);
+            }
+        }
     }
 
-    for (const file of files) {
-        const [fileNameAndTimestamp, ...sections] = file.trim().split(/^\*\*/m);
-        
-        const [fileName, datepart, timepart] = fileNameAndTimestamp.trim().split(' ');
-        const timestamp = `${datepart} ${timepart}`
-
-        if (!fileName.trim()) {
-            return { errorMessage: 'Error: Empty file name' };
-        }
-
-        if (!timestamp || !/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(timestamp)) {
-            return { errorMessage: `Error: Invalid or missing timestamp for file ${fileName.trim()}` };
-        }
-
-        if (sections.length === 0) {
-            return { errorMessage: `Error: No valid sections found in file ${fileName.trim()}` };
-        }
-        
-        for (const section of sections) {
-            const change = {
-                fileName: fileName.trim(),
-                timestamp: timestamp,
-                type: section.substring(0, section.indexOf('**'))
-            };
-
-            if (!['Remove', 'Replace', 'InsertBetween'].includes(change.type)) {
-                return { errorMessage: `Error: Unknown change type ${change.type}` };
-            }
-
-            const sectionLines = section.split('\n');
-            const fromLine = sectionLines.find(line => line.trim().startsWith('* From:'));
-            const toLine = sectionLines.find(line => line.trim().startsWith('* To:'));
-            if (!fromLine || !toLine) {
-                return { errorMessage: `Error: Missing From or To in ${change.type} section` };
-            }
-            change.from = fromLine.replace('* From:', '').trim().replace(/^`|`$/g, '');
-            change.to = toLine.replace('* To:', '').trim().replace(/^`|`$/g, '');
-
-            if (change.type === 'Replace' || change.type === 'InsertBetween') {
-                const contentStart = sectionLines.findIndex(line => line.trim().startsWith('````'));
-                const contentEnd = sectionLines.slice(contentStart + 1).findIndex(line => line.trim() === '````') + contentStart + 1;
-                if (contentStart === -1 || contentEnd === -1 || contentStart >= contentEnd) {
-                    return { errorMessage: `Error: Invalid content format in ${change.type} section` };
-                }
-                change.content = sectionLines.slice(contentStart + 1, contentEnd).join('\n');
-            }
-
-            changes.push(change);
-        }
+    if (currentFile) {
+        changes.push(...parseFileChanges(currentFile));
     }
 
     if (changes.length === 0) {
         return { errorMessage: 'Error: No valid changes found' };
+    }
+
+    return changes;
+}
+
+function parseFileChanges(file) {
+    const changes = [];
+    const [fileName, datepart, timepart] = file.name.split(' ');
+    const timestamp = `${datepart} ${timepart}`;
+
+    if (!fileName.trim()) {
+        return [{ errorMessage: 'Error: Empty file name' }];
+    }
+
+    if (!timestamp || !/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(timestamp)) {
+        return [{ errorMessage: `Error: Invalid or missing timestamp for file ${fileName.trim()}` }];
+    }
+
+    for (const section of file.sections) {
+        const change = {
+            fileName: fileName.trim(),
+            timestamp: timestamp,
+            type: section.type.substring(0, section.type.indexOf('**'))
+        };
+
+        if (!['Remove', 'Replace', 'InsertBetween'].includes(change.type)) {
+            return [{ errorMessage: `Error: Unknown change type ${change.type}` }];
+        }
+
+        const fromLine = section.lines.find(line => line.trim().startsWith('* From:'));
+        const toLine = section.lines.find(line => line.trim().startsWith('* To:'));
+        if (!fromLine || !toLine) {
+            return [{ errorMessage: `Error: Missing From or To in ${change.type} section` }];
+        }
+        change.from = fromLine.replace('* From:', '').trim().replace(/^`|`$/g, '');
+        change.to = toLine.replace('* To:', '').trim().replace(/^`|`$/g, '');
+
+        if (change.type === 'Replace' || change.type === 'InsertBetween') {
+            const contentStart = section.lines.findIndex(line => line.trim().startsWith('````'));
+            const contentEnd = section.lines.slice(contentStart + 1).findIndex(line => line.trim() === '````') + contentStart + 1;
+            if (contentStart === -1 || contentEnd === -1 || contentStart >= contentEnd) {
+                return [{ errorMessage: `Error: Invalid content format in ${change.type} section` }];
+            }
+            change.content = section.lines.slice(contentStart + 1, contentEnd).join('\n');
+        }
+
+        changes.push(change);
     }
 
     return changes;
