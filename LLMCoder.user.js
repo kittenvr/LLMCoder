@@ -1,10 +1,9 @@
 /* ==UserScript==
    @name        LLMCoder
    @namespace   Violentmonkey Scripts
-   @match       *://*/*
+   @match       https://claude.ai/chat/*
    @grant       none
    @version     1.0
-   @author      -
    @description 3/8/2020, 8:42:28 PM
    ==/UserScript== */
 
@@ -28,10 +27,8 @@ function copyToClipboard(code, messageId) {
 }
 
 function formatCode(code) {
-    // 統一將所有的行結束符轉換為 \n
     code = code.replace(/\r\n/g, '\n');
 
-    // 檢查是否為多文件格式
     if (code.trim().startsWith('## File:')) {
         const files = code.split('## File:');
         let formattedCode = '';
@@ -44,7 +41,6 @@ function formatCode(code) {
             const actualCode = codeContent.replace(/```\w*\n|```$/g, '');
 
             const lines = actualCode.split('\n');
-            // 移除最後一個元素，如果它是空字符串
             if (lines[lines.length - 1] === '') {
                 lines.pop();
             }
@@ -58,9 +54,7 @@ function formatCode(code) {
 
         return formattedCode.trim();
     } else {
-        // 單一文本內容格式
         const lines = code.split('\n');
-        // 移除最後一個元素，如果它是空字符串
         if (lines[lines.length - 1] === '') {
             lines.pop();
         }
@@ -77,7 +71,7 @@ function handleCodeInput(e) {
     e.preventDefault();
     const code = e.clipboardData.getData('text');
     formattedCode = formatCode(code);
-    lastCode = code;  // Store the original code
+    lastCode = code;
     document.getElementById('line-numbered-code').textContent = formattedCode;
     copyToClipboard(formattedCode, 'formatted-code-message');
     document.getElementById('changes-input').value = '';
@@ -128,7 +122,6 @@ if (isViolentmonkey()) {
     document.getElementById('changes-input').addEventListener('paste', handlePaste);
 }
 
-// Set initial focus to Format Code input
 window.onload = function() {
     document.getElementById('code-input').focus();
 };
@@ -194,9 +187,6 @@ function processChanges(lastCode, changesInput) {
                 break;
             case 'Replace':
                 lines.splice(start, end - start + 1, ...change.content.split('\n'));
-                //lines.splice(start, end - start + 1, ...change.content.split('\n').map((line, index, array) => 
-                //    index === array.length - 1 ? line + '\n' : line
-                //));
                 break;
         }
     }
@@ -205,11 +195,6 @@ function processChanges(lastCode, changesInput) {
 }
 
 function parseMarkdownChanges(changesInput) {
-    // Remove surrounding separator lines and content if present
-    //const cleanedInput = changesInput.replace(/^[\s\S]*?----\n([\s\S]*?)\n----[\s\S]*$/, '$1').trim();
-    // Remove surrounding XML tags if present
-    //const cleanedInput = changesInput.replace(/<antArtifact[^>]*>([\s\S]*?)<\/antArtifact>/g, '$1').trim();
-    
     const changes = [];
     let currentFile = null;
     let inCodeBlock = false;
@@ -469,8 +454,6 @@ textarea, .line-numbered-area {
         </div>
         <div class="code-section">
             <div class="input-area">
-                <!-- <h2>JSON</h2>
-                <textarea id="changes-input" name="changes" placeholder="Paste JSON string"></textarea> -->
                 <h2>Markdown</h2>
                 <textarea id="changes-input" name="changes" placeholder="Paste Markdown string"></textarea>
             </div>
