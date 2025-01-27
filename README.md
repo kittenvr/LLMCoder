@@ -100,3 +100,15 @@ The userscript will now run automatically on the specified websites, allowing yo
 ## Future Plans
 
 This repository is planned to be integrated into [LLMCoderSync](https://github.com/ChrisTorng/LLMCoderSync). You can use them together now. For more information, please refer to the README.md of [LLMCoderSync](https://github.com/ChrisTorng/LLMCoderSync).
+
+## Roadmap
+
+A new `roadmap.md` file has been created to outline the steps and progress of the project. This file includes sections for completed tasks, ongoing tasks, and future tasks. The purpose of the roadmap is to provide a clear and organized view of the project's development and future plans.
+
+## Updated Usage Instructions
+
+1. Clone this repository.
+2. Open the `index.html` file in your browser. No Python or additional installation is required.
+3. Refer to the `roadmap.md` file for the project's progress and future plans.
+
+  Alternatively, you can use the online version: [LLM Coder](https://christorng.github.io/LLMCoder/). It runs entirely in your browser, and no data is sent to any server.
