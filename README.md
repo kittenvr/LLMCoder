@@ -79,6 +79,24 @@ Read the [instructions/markdown.instruction.en.md](instructions/markdown.instruc
 3. LLMCoder will automatically apply the changes to the source and copy the result to your clipboard.
 4. Paste the modified code back into your IDE to update the source.
 
+## Violentmonkey Userscript
+
+To use LLMCoder as a Violentmonkey userscript, follow these steps:
+
+1. Install the Violentmonkey extension for your browser.
+2. Create a new userscript in Violentmonkey.
+3. Copy the content of `index.html` and `index.js` into the userscript.
+4. Save the userscript and enable it.
+
+The userscript will now run automatically on the specified websites, allowing you to use LLMCoder's features directly in your browser.
+
+## Using the Script to Interact with Claude.ai
+
+1. Open the Claude.ai chat website.
+2. Use the Violentmonkey userscript to paste the code with line numbers and the prompt into the chat window.
+3. The script will automatically extract the changes made by Claude.ai from the chat and apply them to your code.
+4. Copy the modified code from the chat and paste it back into your IDE to update the source.
+
 ## Future Plans
 
 This repository is planned to be integrated into [LLMCoderSync](https://github.com/ChrisTorng/LLMCoderSync). You can use them together now. For more information, please refer to the README.md of [LLMCoderSync](https://github.com/ChrisTorng/LLMCoderSync).
